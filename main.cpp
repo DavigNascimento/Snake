@@ -6,9 +6,12 @@
 #include <SDL2/SDL.h>
 
 #include "entities/snake.h"
+#include "entities/apple.h"
+#include "utils/collision.h"
 
 #define WIDTH 1200
 #define HEIGHT 600
+#define SIZE 20
 
 int main()
 {
@@ -26,9 +29,13 @@ int main()
 
     SDL_Surface* surface = SDL_GetWindowSurface(window);
 
-    Snake snake(10);
-    int rate = 10;
+    Snake snake(SIZE);
+    Apple apple(SIZE);
+
+
+    int rate = 20;
     int direction = 1;
+    bool hasApple = false;
     SDL_Event event;
 
     int running = 1;
@@ -41,29 +48,40 @@ int main()
             if (event.type == SDL_KEYDOWN) {
                 SDL_Keycode key = event.key.keysym.sym;
 
-                if(key == SDLK_w) direction = 3;
-                if(key == SDLK_a) direction = 2;
-                if(key == SDLK_s) direction = 4;
-                if(key == SDLK_d) direction = 1;
+                if(key == SDLK_w & direction != 4) direction = 3;
+                if(key == SDLK_a & direction != 1) direction = 2;
+                if(key == SDLK_s & direction != 3) direction = 4;
+                if(key == SDLK_d & direction != 2) direction = 1;
 
-                if(key == SDLK_g) snake.grow(WIDTH, HEIGHT, direction, rate);
-                
                 if (key == SDLK_q) {
                     running = 0;
                 }
             }
         }
 
+        if(!hasApple)
+        {
+            apple.spawn(surface, WIDTH, HEIGHT);
+            hasApple = true;
+        }
 
+        if(checkCollision(*snake.get_head(), *apple.get()))
+        {
+
+            snake.grow(WIDTH, HEIGHT, direction, rate);
+            apple.spawn(surface, WIDTH, HEIGHT);
+        }
 
         snake.move(WIDTH, HEIGHT, direction, rate);
+
         snake.fill(surface);
+        apple.fill(surface);
         SDL_UpdateWindowSurface(window);
 
         // WIPE SCREEN
         SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 150, 150, 250));
 
-        SDL_Delay(100);
+        SDL_Delay(50);
     }
     return 0;
 }
