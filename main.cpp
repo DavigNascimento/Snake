@@ -1,12 +1,11 @@
-
 #include <SDL_keycode.h>
 #include <SDL_rect.h>
 #include <SDL_timer.h>
+#include <cstdlib>
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-#include "utils/moveRect.h"
-#include "utils/collision.h"
+#include "entities/snake.h"
 
 #define WIDTH 1200
 #define HEIGHT 600
@@ -27,12 +26,12 @@ int main()
 
     SDL_Surface* surface = SDL_GetWindowSurface(window);
 
-    SDL_Rect player = {0, 0, 10, 10};
-    SDL_Rect rect = {100, 100, 100, 100};
-    int lastMove = 1;
-    
-    int running = 1;
+    Snake snake(10);
+    int rate = 10;
+    int direction = 1;
     SDL_Event event;
+
+    int running = 1;
     while (running)
     {
         while (SDL_PollEvent(&event)) {
@@ -42,39 +41,30 @@ int main()
             if (event.type == SDL_KEYDOWN) {
                 SDL_Keycode key = event.key.keysym.sym;
 
-                if(key == SDLK_w) lastMove = 3;
-                if(key == SDLK_a) lastMove = 2;
-                if(key == SDLK_s) lastMove = 4;
-                if(key == SDLK_d) lastMove = 1;
+                if(key == SDLK_w) direction = 3;
+                if(key == SDLK_a) direction = 2;
+                if(key == SDLK_s) direction = 4;
+                if(key == SDLK_d) direction = 1;
+
+                if(key == SDLK_g) snake.grow(WIDTH, HEIGHT, direction, rate);
                 
+                printf("direction: %d\n", direction);
                 if (key == SDLK_q) {
                     running = 0;
                 }
             }
         }
 
-        SDL_Rect tmpRect = player;
-        int rate = 10;
-        if(lastMove == 1) tmpRect.x += rate;
-        if(lastMove == 2) tmpRect.x -= rate;
-        if(lastMove == 3) tmpRect.y -= rate;
-        if(lastMove == 4) tmpRect.y += rate;
-        
-        if(!collidesWithWindow(tmpRect, WIDTH, HEIGHT) & !checkCollision(tmpRect, rect)){
-            player.x = tmpRect.x;
-            player.y = tmpRect.y;
-        }
 
 
-        SDL_FillRect(surface, &player, SDL_MapRGB(surface->format, 255, 155, 155));
-        SDL_FillRect(surface, &rect, SDL_MapRGB(surface->format, 255, 255, 255));
+        snake.move(WIDTH, HEIGHT, direction, rate);
+        snake.fill(surface);
         SDL_UpdateWindowSurface(window);
-        SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0,0,0) );
+
+        // WIPE SCREEN
+        SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 150, 150, 250));
 
         SDL_Delay(100);
     }
-
-
-
     return 0;
 }

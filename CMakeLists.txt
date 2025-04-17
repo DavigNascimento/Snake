@@ -10,5 +10,6 @@ add_executable(snake
     main.cpp
     utils/moveRect.cpp
     utils/collision.cpp
+    entities/snake.cpp
 )
 target_link_libraries(snake ${SDL2_LIBRARIES})
