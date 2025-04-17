@@ -80,4 +80,4 @@ public:
     }
 };
 
-#endif // !SNAKE
+#endif

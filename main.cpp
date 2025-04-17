@@ -74,14 +74,14 @@ int main()
 
         snake.move(WIDTH, HEIGHT, direction, rate);
 
-        snake.fill(surface);
         apple.fill(surface);
+        snake.fill(surface);
         SDL_UpdateWindowSurface(window);
 
         // WIPE SCREEN
         SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 150, 150, 250));
 
-        SDL_Delay(50);
+        SDL_Delay(100);
     }
     return 0;
 }

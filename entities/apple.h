@@ -34,7 +34,8 @@ public:
 
     void fill(SDL_Surface *surface)
     {
-        SDL_FillRect(surface, &apple, SDL_MapRGB(surface->format, color[0], color[1], color[2]));
+        Uint32 pixelColor = SDL_MapRGB(surface->format, color[0], color[1], color[2]);
+        drawFilledCircle(surface, apple.x + size / 2, apple.y + size / 2, size / 2, pixelColor);
     }
 
     void spawn(SDL_Surface *surface, int Wwidth, int Wheight)
@@ -45,6 +46,21 @@ public:
 
     SDL_Rect* get(){
         return &apple;
+    }
+
+    void drawFilledCircle(SDL_Surface* surface, int cx, int cy, int radius, Uint32 color) {
+        for (int y = -radius; y <= radius; y++) {
+            for (int x = -radius; x <= radius; x++) {
+                if (x*x + y*y <= radius*radius) {
+                    int drawX = cx + x;
+                    int drawY = cy + y;
+                    if (drawX >= 0 && drawX < surface->w && drawY >= 0 && drawY < surface->h) {
+                        Uint32* pixels = (Uint32*)surface->pixels;
+                        pixels[drawY * surface->w + drawX] = color;
+                    }
+                }
+            }
+        }
     }
 
 };
