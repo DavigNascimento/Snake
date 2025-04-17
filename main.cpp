@@ -48,7 +48,6 @@ int main()
 
                 if(key == SDLK_g) snake.grow(WIDTH, HEIGHT, direction, rate);
                 
-                printf("direction: %d\n", direction);
                 if (key == SDLK_q) {
                     running = 0;
                 }
