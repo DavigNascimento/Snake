@@ -1,7 +1,6 @@
-# Snake Game
+Snake Game
 ===========
 
-## About
 This is a game I made for enternainment and learning purposes, learning C++ and game making, but also being very fun to develop.
 This is the result.
 
