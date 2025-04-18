@@ -19,9 +19,7 @@ public:
     {
         this->justGrew = false;
         this->size = size;
-        color[0] = 70;
-        color[1] = 255;
-        color[2] = 70;
+        color = {70, 255, 70};
         snake.push_back({0, 0, size, size});
     }
 
