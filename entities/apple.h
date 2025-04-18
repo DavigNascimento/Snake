@@ -25,8 +25,8 @@ public:
 
         std::random_device rd;
         std::mt19937 gen(rd()); 
-        std::uniform_int_distribution<> randX(50, Wwidth);
-        std::uniform_int_distribution<> randY(50, Wheight);
+        std::uniform_int_distribution<> randX(50, Wwidth-50);
+        std::uniform_int_distribution<> randY(50, Wheight-50);
 
         apple.x = randX(gen);
         apple.y = randY(gen);

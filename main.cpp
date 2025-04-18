@@ -1,6 +1,4 @@
 #include <SDL_keycode.h>
-#include <SDL_rect.h>
-#include <SDL_timer.h>
 #include <cstdlib>
 #include <stdio.h>
 #include <SDL2/SDL.h>
@@ -67,7 +65,6 @@ int main()
 
         if(checkCollision(*snake.get_head(), *apple.get()))
         {
-
             snake.grow(WIDTH, HEIGHT, direction, rate);
             apple.spawn(surface, WIDTH, HEIGHT);
         }

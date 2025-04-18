@@ -2,12 +2,9 @@
 #define SNAKE
 
 #include <SDL2/SDL.h>
-#include <SDL_rect.h>
-#include <SDL_surface.h>
 #include <array>
 #include <cstdio>
 #include <vector>
-#include "../utils/moveRect.h"
 #include "../utils/collision.h"
 
 class Snake{
@@ -56,7 +53,11 @@ public:
         if(direction == 3) tmpRect.y -= rate;
         if(direction == 4) tmpRect.y += rate;
 
-        if(!collidesWithWindow(tmpRect, Wwidth, Wheight) & !collidesWithSelf())
+        if (collidesWithWindow(tmpRect, Wwidth, Wheight) || collidesWithSelf()) {
+            SDL_Delay(1000);
+            SDL_Quit();
+        }
+        if(!collidesWithWindow(tmpRect, Wwidth, Wheight) && !collidesWithSelf())
         {
             for (int i = snake.size() - 1; i > 0; --i)
             {
