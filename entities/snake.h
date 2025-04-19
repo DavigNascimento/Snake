@@ -43,7 +43,7 @@ public:
         return false;
     }
 
-    void move(int Wwidth, int Wheight, int direction, int rate)
+    void move(int Wwidth, int Wheight, int direction, int rate, bool BorderWrap = true)
     {
         SDL_Rect lastPart, tmpRect = snake[0];
         if(direction == 1) tmpRect.x += rate;
@@ -51,11 +51,11 @@ public:
         if(direction == 3) tmpRect.y -= rate;
         if(direction == 4) tmpRect.y += rate;
 
-        if (collidesWithWindow(tmpRect, Wwidth, Wheight) || collidesWithSelf()) {
+        if (collidesWithSelf()) {
             SDL_Delay(1000);
             SDL_Quit();
         }
-        if(!collidesWithWindow(tmpRect, Wwidth, Wheight) && !collidesWithSelf())
+        if(!collidesWithSelf())
         {
             for (int i = snake.size() - 1; i > 0; --i)
             {
@@ -63,6 +63,17 @@ public:
             }
             snake[0] = tmpRect;
         }
+
+        if(BorderWrap){
+            int Wside = collidesWithWindow(tmpRect, Wwidth, Wheight);
+            if(Wside){
+                if(Wside == 4) snake[0].y = 0;
+                if(Wside == 3) snake[0].x = 0;
+                if(Wside == 2) snake[0].y = Wheight;
+                if(Wside == 1) snake[0].x = Wwidth;
+            }
+        }
+
         justGrew = false;
     }
 
