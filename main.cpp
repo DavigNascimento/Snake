@@ -10,6 +10,7 @@
 #define WIDTH 1200
 #define HEIGHT 600
 #define SIZE 20
+#define RATE 20
 
 int main()
 {
@@ -31,7 +32,6 @@ int main()
     Apple apple(SIZE);
 
 
-    int rate = 20;
     int direction = 1;
     bool hasApple = false;
     SDL_Event event;
@@ -65,11 +65,11 @@ int main()
 
         if(checkCollision(*snake.get_head(), *apple.get()))
         {
-            snake.grow(WIDTH, HEIGHT, direction, rate);
+            snake.grow(WIDTH, HEIGHT, direction, RATE);
             apple.spawn(surface, WIDTH, HEIGHT);
         }
 
-        snake.move(WIDTH, HEIGHT, direction, rate);
+        snake.move(WIDTH, HEIGHT, direction, RATE);
 
         apple.fill(surface);
         snake.fill(surface);
